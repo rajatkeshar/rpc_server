@@ -22,13 +22,13 @@ module.exports = {
 				body: JSON.stringify(payload)
 			};
 			function callback(error, response, body) {
-				if(error) return reject(error);
+				if(error) return resolve(error);
 				try {
 					// JSON.parse() can throw an exception if not valid JSON
-                    resolve(JSON.parse(body));
-                } catch(e) {
-                    return reject(e);
-                }
+          resolve(JSON.parse(body));
+        } catch(e) {
+          return reject(e);
+        }
 			}
 			request(options, callback);
 		});
