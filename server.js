@@ -22,11 +22,16 @@ app.all('/', async (request, response)=> {
 	response.json(res);
 });
 
-const job = new CronJob('*/30 * * * * *', async ()=> {
-	console.log('Started Cron At:', new Date());
+const job = new CronJob('0 */1 * * * *', async ()=> {
+	console.log('Started Cron1 At:', new Date());
 	RPC_URL = RPC_PREFIX + ip;
 	var res = await httpCall.call('POST', RPC_URL, { jsonrpc: '2.0', id: 2, method: 'net_listening', params: [] });
 	console.log("net_listening res: ", RPC_URL, res);
+	ip = RPC_IP[++count];
+	if(res.result && RPC_IP.length == count) {
+		count = 0;
+		ip = RPC_IP[count];
+	}
 	if(!res.result) {
 		count ++;
 		ip = RPC_IP[count];
